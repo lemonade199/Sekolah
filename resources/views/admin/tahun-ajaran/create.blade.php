@@ -1,199 +1,203 @@
-{{-- resources/views/admin/tahun-ajaran/create.blade.php --}}
 @extends('layouts.admin')
 
-@section('title', 'Tambah Tahun Ajaran Baru')
+@section('title', 'Tambah Tahun Ajaran')
+
+@section('breadcrumb', 'Master Data / Tahun Ajaran / Tambah')
 
 @section('content')
-<div class="p-6 bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <div class="mb-8">
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
-                    <i class="fas fa-calendar-plus mr-2 text-blue-600"></i>Tambah Tahun Ajaran Baru
-                </h1>
-                <p class="text-gray-600 mt-2">Buat tahun ajaran baru untuk sistem PPDB dan akademik</p>
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="p-6 md:p-8">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                        <span class="material-symbols-outlined">calendar_add_on</span>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800">Informasi Tahun Ajaran</h2>
+                        <p class="text-sm text-slate-500">Silahkan lengkapi data tahun ajaran baru di bawah ini.</p>
+                    </div>
+                </div>
+
+                <a href="{{ route('admin.tahun-ajaran.index') }}"
+                   class="inline-flex w-full md:w-auto items-center justify-center gap-2 px-4 py-2.5 bg-white text-slate-700 rounded-xl border border-slate-200 hover:bg-slate-50 transition-all font-bold text-sm shadow-sm">
+                    <span class="material-symbols-outlined text-xl">arrow_back</span>
+                    Kembali
+                </a>
             </div>
-            <a href="{{ route('admin.tahun-ajaran.index') }}" 
-               class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
-        </div>
-    </div>
 
-    <!-- Form Card -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden max-w-3xl mx-auto">
-        <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900 flex items-center">
-                <i class="fas fa-calendar-alt text-blue-600 mr-2"></i>
-                Formulir Tahun Ajaran
-            </h3>
-            <p class="text-sm text-gray-600 mt-1">Isi informasi tahun ajaran baru</p>
-        </div>
-
-        <div class="p-6">
-            <form action="{{ route('admin.tahun-ajaran.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.tahun-ajaran.store') }}" method="POST" id="mainForm" class="space-y-6">
                 @csrf
 
-                <!-- Tahun Ajaran -->
-                <div>
-                    <label for="tahun_ajaran" class="block text-sm font-medium text-gray-700 mb-2">
-                        Tahun Ajaran <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-calendar text-gray-400"></i>
-                        </div>
-                        <input type="text" 
-                               id="tahun_ajaran"
-                               name="tahun_ajaran" 
-                               value="{{ old('tahun_ajaran') }}"
-                               required
-                               placeholder="Contoh: 2024/2025"
-                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tahun_ajaran') border-red-500 @enderror">
-                    </div>
-                    <p class="text-xs text-gray-500 mt-1">Format: YYYY/YYYY (contoh: 2024/2025)</p>
-                    @error('tahun_ajaran')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Semester -->
-                <div>
-                    <label for="semester" class="block text-sm font-medium text-gray-700 mb-2">
-                        Semester <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-layer-group text-gray-400"></i>
-                        </div>
-                        <select id="semester" 
-                                name="semester" 
-                                required
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('semester') border-red-500 @enderror">
-                            <option value="">Pilih Semester</option>
-                            <option value="Ganjil" {{ old('semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                            <option value="Genap" {{ old('semester') == 'Genap' ? 'selected' : '' }}>Genap</option>
-                        </select>
-                    </div>
-                    @error('semester')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Tanggal Mulai dan Selesai -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Tanggal Mulai -->
+                    <div class="md:col-span-2">
+                        <label for="tahun_ajaran" class="block text-sm font-bold text-slate-700 mb-2">
+                            Tahun Ajaran <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">event_repeat</span>
+                            <input
+                                id="tahun_ajaran"
+                                name="tahun_ajaran"
+                                value="{{ old('tahun_ajaran') }}"
+                                required
+                                type="text"
+                                placeholder="Contoh: 2024/2025"
+                                @class([
+                                    'w-full pl-12 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm',
+                                    'border-rose-500' => $errors->has('tahun_ajaran'),
+                                    'border-slate-200' => !$errors->has('tahun_ajaran'),
+                                ])
+                            />
+                        </div>
+                        <p class="mt-2 text-[10px] text-slate-400 italic">Format: YYYY/YYYY (Misal: 2024/2025)</p>
+                        @error('tahun_ajaran') <p class="text-[10px] text-rose-500 font-bold mt-1">{{ $message }}</p> @enderror
+                    </div>
+
                     <div>
-                        <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="tanggal_mulai" class="block text-sm font-bold text-slate-700 mb-2">
                             Tanggal Mulai <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-play text-green-500"></i>
-                            </div>
-                            <input type="date" 
-                                   id="tanggal_mulai"
-                                   name="tanggal_mulai" 
-                                   value="{{ old('tanggal_mulai') }}"
-                                   required
-                                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tanggal_mulai') border-red-500 @enderror">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">calendar_today</span>
+                            <input
+                                id="tanggal_mulai"
+                                name="tanggal_mulai"
+                                value="{{ old('tanggal_mulai') }}"
+                                required
+                                type="date"
+                                @class([
+                                    'w-full pl-12 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm',
+                                    'border-rose-500' => $errors->has('tanggal_mulai'),
+                                    'border-slate-200' => !$errors->has('tanggal_mulai'),
+                                ])
+                            />
                         </div>
-                        <p class="text-xs text-gray-500 mt-1">Tanggal dimulainya tahun ajaran</p>
-                        @error('tanggal_mulai')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        @error('tanggal_mulai') <p class="text-[10px] text-rose-500 font-bold mt-1">{{ $message }}</p> @enderror
                     </div>
 
-                    <!-- Tanggal Selesai -->
                     <div>
-                        <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="tanggal_selesai" class="block text-sm font-bold text-slate-700 mb-2">
                             Tanggal Selesai <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-stop text-red-500"></i>
-                            </div>
-                            <input type="date" 
-                                   id="tanggal_selesai"
-                                   name="tanggal_selesai" 
-                                   value="{{ old('tanggal_selesai') }}"
-                                   required
-                                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tanggal_selesai') border-red-500 @enderror">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">event_busy</span>
+                            <input
+                                id="tanggal_selesai"
+                                name="tanggal_selesai"
+                                value="{{ old('tanggal_selesai') }}"
+                                required
+                                type="date"
+                                @class([
+                                    'w-full pl-12 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm',
+                                    'border-rose-500' => $errors->has('tanggal_selesai'),
+                                    'border-slate-200' => !$errors->has('tanggal_selesai'),
+                                ])
+                            />
                         </div>
-                        <p class="text-xs text-gray-500 mt-1">Tanggal berakhirnya tahun ajaran</p>
-                        @error('tanggal_selesai')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        @error('tanggal_selesai') <p class="text-[10px] text-rose-500 font-bold mt-1">{{ $message }}</p> @enderror
                     </div>
-                </div>
 
-                <!-- Status Aktif -->
-                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <div class="flex items-center">
-                        <input type="checkbox" 
-                               id="is_aktif" 
-                               name="is_aktif" 
-                               value="1"
-                               {{ old('is_aktif') ? 'checked' : '' }}
-                               class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500">
-                        <label for="is_aktif" class="ml-3 block">
-                            <span class="text-sm font-medium text-gray-900">Aktifkan tahun ajaran ini</span>
-                            <span class="text-xs text-gray-500 block mt-1">
-                                Jika dicentang, tahun ajaran ini akan menjadi tahun ajaran aktif dan 
-                                tahun ajaran lain akan otomatis dinonaktifkan
-                            </span>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-slate-700 mb-3">
+                            Semester <span class="text-red-500">*</span>
                         </label>
-                    </div>
-                </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <label class="relative flex items-center p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition-all"
+                                   for="semester_ganjil">
+                                <input
+                                    id="semester_ganjil"
+                                    class="w-4 h-4 text-primary border-slate-300 focus:ring-primary/20"
+                                    name="semester"
+                                    type="radio"
+                                    value="Ganjil"
+                                    {{ old('semester') == 'Ganjil' ? 'checked' : '' }}
+                                    required
+                                />
+                                <div class="ml-4">
+                                    <span class="block text-sm font-bold text-slate-800">Ganjil</span>
+                                    <span class="block text-xs text-slate-500">Semester 1</span>
+                                </div>
+                            </label>
 
-                <!-- Keterangan -->
-                <div>
-                    <label for="keterangan" class="block text-sm font-medium text-gray-700 mb-2">
-                        Keterangan (Opsional)
-                    </label>
-                    <div class="relative">
-                        <div class="absolute top-3 left-3 pointer-events-none">
-                            <i class="fas fa-sticky-note text-gray-400"></i>
+                            <label class="relative flex items-center p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition-all"
+                                   for="semester_genap">
+                                <input
+                                    id="semester_genap"
+                                    class="w-4 h-4 text-primary border-slate-300 focus:ring-primary/20"
+                                    name="semester"
+                                    type="radio"
+                                    value="Genap"
+                                    {{ old('semester') == 'Genap' ? 'checked' : '' }}
+                                    required
+                                />
+                                <div class="ml-4">
+                                    <span class="block text-sm font-bold text-slate-800">Genap</span>
+                                    <span class="block text-xs text-slate-500">Semester 2</span>
+                                </div>
+                            </label>
                         </div>
-                        <textarea id="keterangan" 
-                                  name="keterangan" 
-                                  rows="4"
-                                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('keterangan') border-red-500 @enderror"
-                                  placeholder="Tambahkan keterangan atau catatan tentang tahun ajaran ini...">{{ old('keterangan') }}</textarea>
+                        @error('semester') <p class="text-[10px] text-rose-500 font-bold mt-2">{{ $message }}</p> @enderror
                     </div>
-                    @error('keterangan')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-slate-700 mb-3">Aktifkan Periode?</label>
+                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-slate-500">offline_pin</span>
+                                <p class="text-sm text-slate-600 font-medium">Jadikan periode ini sebagai periode aktif sistem</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" name="is_aktif" value="1" {{ old('is_aktif') ? 'checked' : '' }} class="sr-only peer">
+                                <div class="w-14 h-7 bg-slate-200 peer-focus:outline-none peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-inner rounded-full"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label for="keterangan" class="block text-sm font-bold text-slate-700 mb-2">Keterangan (Opsional)</label>
+                        <textarea
+                            id="keterangan"
+                            name="keterangan"
+                            rows="3"
+                            placeholder="Tambahkan catatan khusus periode ini..."
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                        >{{ old('keterangan') }}</textarea>
+                    </div>
                 </div>
 
-                <!-- Informasi Tambahan -->
-                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                    <h4 class="text-sm font-medium text-yellow-800 flex items-center mb-2">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        Informasi
-                    </h4>
-                    <ul class="text-xs text-yellow-700 space-y-1 list-disc list-inside">
-                        <li>Tahun ajaran yang aktif akan digunakan sebagai default di semua form</li>
-                        <li>Pastikan tanggal mulai lebih awal dari tanggal selesai</li>
-                        <li>Format tahun ajaran harus YYYY/YYYY (contoh: 2024/2025)</li>
-                        <li>Anda dapat mengaktifkan/nonaktifkan tahun ajaran kapan saja</li>
-                    </ul>
-                </div>
-
-                <!-- Submit Buttons -->
-                <div class="pt-6 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
-                    <button type="submit" 
-                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
-                        <i class="fas fa-save mr-2"></i> Simpan Tahun Ajaran
-                    </button>
-                    
-                    <a href="{{ route('admin.tahun-ajaran.index') }}" 
-                       class="flex-1 border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 px-6 rounded-lg text-center transition duration-300">
+                <div class="pt-8 mt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-end gap-3">
+                    <a href="{{ route('admin.tahun-ajaran.index') }}"
+                       class="w-full sm:w-auto px-8 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all text-center">
                         Batal
                     </a>
+                    <button
+                        type="submit"
+                        class="w-full sm:w-auto px-10 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+                    >
+                        <span class="material-symbols-outlined text-xl">save</span>
+                        <span id="btnText">Simpan Tahun Ajaran</span>
+                        <span id="spinner" class="hidden">
+                            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </span>
+                    </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div class="mt-6 bg-lavender/30 border border-primary/10 rounded-2xl p-6">
+        <div class="flex gap-4">
+            <span class="material-symbols-outlined text-primary">info</span>
+            <div>
+                <h4 class="text-sm font-bold text-primary mb-1">Catatan Penting</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Menambahkan tahun ajaran baru tidak akan langsung menonaktifkan tahun ajaran yang sedang berjalan. Anda dapat mengubah status keaktifan melalui menu daftar Tahun Ajaran setelah data berhasil disimpan.
+                </p>
+            </div>
         </div>
     </div>
 </div>
@@ -202,29 +206,32 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Validasi format tahun ajaran
+        const form = document.getElementById('mainForm');
+        const btnText = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
         const tahunAjaranInput = document.getElementById('tahun_ajaran');
-        
-        tahunAjaranInput.addEventListener('input', function(e) {
-            let value = this.value.replace(/[^0-9/]/g, '');
-            
-            // Auto-format untuk tahun ajaran
-            if (value.length === 4 && !value.includes('/')) {
-                value = value + '/';
-            }
-            
-            // Batasi panjang maksimal
-            if (value.length > 9) {
-                value = value.slice(0, 9);
-            }
-            
-            this.value = value;
-        });
-
-        // Validasi tanggal selesai harus setelah tanggal mulai
         const tanggalMulai = document.getElementById('tanggal_mulai');
         const tanggalSelesai = document.getElementById('tanggal_selesai');
 
+        // Form Submission Overlay
+        form.addEventListener('submit', function() {
+            btnText.textContent = 'Memproses...';
+            spinner.classList.remove('hidden');
+        });
+
+        // Auto-format Tahun Ajaran
+        tahunAjaranInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/[^0-9/]/g, '');
+            if (value.length === 4 && !value.includes('/')) {
+                value = value + '/';
+            }
+            if (value.length > 9) {
+                value = value.slice(0, 9);
+            }
+            this.value = value;
+        });
+
+        // Date Validation
         function validateDates() {
             if (tanggalMulai.value && tanggalSelesai.value) {
                 if (tanggalSelesai.value < tanggalMulai.value) {
@@ -235,45 +242,35 @@
             }
         }
 
-        tanggalMulai.addEventListener('change', validateDates);
-        tanggalSelesai.addEventListener('change', validateDates);
-
-        // Set minimal date untuk tanggal selesai
         tanggalMulai.addEventListener('change', function() {
             tanggalSelesai.min = this.value;
+            validateDates();
         });
+        tanggalSelesai.addEventListener('change', validateDates);
 
-        // Tampilkan pesan error jika ada dari session
-        @if(session('error'))
-            alert('{{ session('error') }}');
-        @endif
-    });
-
-    // Fungsi untuk generate tahun ajaran otomatis
-    function generateTahunAjaran() {
-        const now = new Date();
-        const tahunSekarang = now.getFullYear();
-        const bulan = now.getMonth() + 1; // Januari = 1
-        
-        let tahunMulai, tahunSelesai;
-        
-        // Jika bulan >= 7 (Juli), tahun mulai = tahun sekarang, tahun selesai = tahun sekarang + 1
-        // Jika bulan < 7, tahun mulai = tahun sekarang - 1, tahun selesai = tahun sekarang
-        if (bulan >= 7) {
-            tahunMulai = tahunSekarang;
-            tahunSelesai = tahunSekarang + 1;
-        } else {
-            tahunMulai = tahunSekarang - 1;
-            tahunSelesai = tahunSekarang;
+        // Auto-generate current/next academic year if empty
+        if (!tahunAjaranInput.value) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            if (month >= 7) {
+                tahunAjaranInput.value = `${year}/${year + 1}`;
+            } else {
+                tahunAjaranInput.value = `${year - 1}/${year}`;
+            }
         }
-        
-        return tahunMulai + '/' + tahunSelesai;
-    }
-
-    // Isi otomatis tahun ajaran jika kosong
-    const tahunAjaranField = document.getElementById('tahun_ajaran');
-    if (!tahunAjaranField.value) {
-        tahunAjaranField.value = generateTahunAjaran();
-    }
+    });
 </script>
+@endpush
+
+@push('styles')
+<style>
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.5);
+        cursor: pointer;
+    }
+    .dark input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.8);
+    }
+</style>
 @endpush

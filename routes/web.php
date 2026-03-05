@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\GuruAccountController;
 use App\Http\Controllers\Admin\AbsensiController;
+use App\Http\Controllers\Admin\AbsensiGuruController;
 use App\Http\Controllers\Admin\TahunAjaranController;
 use App\Http\Controllers\Admin\SpmbController as AdminSpmbController;
 use App\Http\Controllers\Admin\SpmbSettingController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Admin\SpmbBuktiTransferController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\MateriKbmController;
 use App\Http\Controllers\Admin\JadwalPelajaranController as AdminJadwalPelajaranController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 // ==================== ROUTES PUBLIK ====================
 
@@ -166,8 +168,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
         Route::get('/{id}/edit', [AbsensiController::class, 'edit'])->name('edit');
         Route::put('/{id}', [AbsensiController::class, 'update'])->name('update');
         Route::delete('/{id}', [AbsensiController::class, 'destroy'])->name('destroy');
+        Route::get('/detail', [AbsensiController::class, 'detail'])->name('detail');
         Route::get('/fill', [AbsensiController::class, 'fill'])->name('fill');
         Route::post('/store-batch', [AbsensiController::class, 'storeBatch'])->name('store-batch');
+    });
+
+    // Absensi Guru
+    Route::prefix('absensi-guru')->name('absensi-guru.')->group(function () {
+        Route::get('/', [AbsensiGuruController::class, 'index'])->name('index');
+        Route::get('/rekap', [AbsensiGuruController::class, 'rekap'])->name('rekap');
+        Route::get('/fill', [AbsensiGuruController::class, 'fill'])->name('fill');
+        Route::post('/store-batch', [AbsensiGuruController::class, 'storeBatch'])->name('store-batch');
+        Route::get('/detail', [AbsensiGuruController::class, 'detail'])->name('detail');
     });
 
     Route::prefix('tahun-ajaran')->name('tahun-ajaran.')->group(function () {
@@ -268,6 +280,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::post('galeri/bulk-delete', [AdminGaleriController::class, 'bulkDelete'])->name('galeri.bulk-delete');
     Route::delete('galeri/gambar/{id}', [AdminGaleriController::class, 'destroyGambar'])->name('galeri.gambar.destroy');
     Route::post('galeri/{galeri}/update-urutan', [AdminGaleriController::class, 'updateUrutan'])->name('galeri.update-urutan');
+    
+    // Kegiatan Sekolah
+    Route::resource('kegiatan', App\Http\Controllers\Admin\KegiatanController::class);
+    Route::patch('kegiatan/{kegiatan}/toggle-publish', [App\Http\Controllers\Admin\KegiatanController::class, 'togglePublish'])->name('kegiatan.toggle-publish');
 
     // Buku Tamu Management
     Route::resource('bukutamu', AdminBukuTamuController::class);
@@ -291,6 +307,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // Jadwal Pelajaran
     Route::resource('jadwal-pelajaran', AdminJadwalPelajaranController::class);
+    // Activity Log
+    Route::resource('activity-log', ActivityLogController::class)->only(['index', 'destroy']);
 
     // Widgets
     Route::get('/widgets/spmb-statistics', [DashboardController::class, 'getSpmbStatistics'])->name('widgets.spmb-statistics');
