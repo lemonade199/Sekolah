@@ -47,6 +47,8 @@ Route::prefix('buku-tamu')->name('buku-tamu.')->group(function () {
     Route::get('/success', [BukuTamuController::class, 'success'])->name('success');
 });
 
+Route::get('/informasi', [App\Http\Controllers\InformasiController::class, 'index'])->name('informasi.index');
+
 Route::get('/profil', [App\Http\Controllers\ProfilController::class, 'index'])->name('profil.index');
 
 
